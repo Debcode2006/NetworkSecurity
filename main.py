@@ -12,7 +12,9 @@ if __name__=='__main__':
         training_pipeline_config = TrainingPipelineConfig()
         data_ingestion_config = DataIngestConfig(training_pipeline_config)
         data_ingestion = DataIngestion(data_ingestion_config)
+        data_ingestion_artifact_config=data_ingestion.initiate_data_ingestion()
         
+        print(data_ingestion_artifact_config)
     
     except Exception as e:
         raise NetworkSecurityException(e,sys)
