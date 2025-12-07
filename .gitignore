@@ -87,3 +87,4 @@ ehthumbs.db
 .env.*
 venv
 .env
+testmongodb.py
