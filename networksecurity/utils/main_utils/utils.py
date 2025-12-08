@@ -24,3 +24,24 @@ def write_yaml_file(filepath:str, content:object, replace:bool=False)-> dict:
         
     except Exception as e:
         raise NetworkSecurityException(e,sys)
+    
+    
+def save_numpy_array_data(filepath:str, array:np.array):
+    try:
+        dir_path = os.path.dirname(filepath)
+        os.makedirs(dir_path, exist_ok=True)
+        with open(filepath, 'wb') as file:
+            np.save(file, array)
+            
+    except Exception as e:
+        raise NetworkSecurityException(e, sys)
+    
+    
+def save_object(filepath:str, object:object):
+    try:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, 'wb') as file_obj:
+            pickle.dump(object, file_obj)
+            
+    except Exception as e:
+        raise NetworkSecurityException(e,sys)
