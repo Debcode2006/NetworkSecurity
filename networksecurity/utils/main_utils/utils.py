@@ -45,3 +45,28 @@ def save_object(filepath:str, object:object):
             
     except Exception as e:
         raise NetworkSecurityException(e,sys)
+    
+    
+def load_object(filepath:str)-> object:
+    try:
+        if not os.path.exists(filepath):
+            raise Exception(f"the file {filepath} doesn't exist")
+        
+        with open(filepath,'rb') as obj:
+            print(obj)
+            return pickle.load(obj)
+    
+    except Exception as e:
+        raise NetworkSecurityException(e,sys)
+    
+
+def load_numpy_array_data(filepath:str)-> object:
+    try:
+        if not os.path.exists(filepath):
+            raise Exception(f"the file {filepath} doesn't exist")
+        with open(filepath,'rb') as obj:
+            print(obj)
+            return np.load(obj)
+    
+    except Exception as e:
+        raise NetworkSecurityException(e,sys)
