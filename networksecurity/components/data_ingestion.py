@@ -6,6 +6,7 @@ from networksecurity.entity.artifact_entity import DataIngestionArtifact
 import os
 import sys
 import pymongo
+import certifi
 import pandas as pd
 import numpy as np
 from typing import List
@@ -15,6 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MONGO_DB_URL=os.getenv("MONGO_DB_URL")
+ca = certifi.where()
 
 class DataIngestion:
     def __init__(self, data_ingestion_config: DataIngestConfig):
@@ -35,7 +37,7 @@ class DataIngestion:
         try:
             database_name= self.data_ingestion_config.database_name
             collection_name = self.data_ingestion_config.collection_name
-            self.mongo_client = pymongo.MongoClient(MONGO_DB_URL)
+            self.mongo_client = pymongo.MongoClient(MONGO_DB_URL, tlsCAFile=ca)
             
             collection = self.mongo_client[database_name][collection_name]
             df = pd.DataFrame(list(collection.find()))
