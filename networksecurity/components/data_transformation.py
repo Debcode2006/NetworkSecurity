@@ -63,8 +63,8 @@ class DataTransformation:
             transformed_input_train_df= preprocessor_object.transform(input_feature_train_df)
             transformed_input_test_df= preprocessor_object.transform(input_feature_test_df)
             
-            train_arr= np.c(transformed_input_train_df, np.array(target_train_df))
-            test_arr= np.c(transformed_input_test_df,np.array(target_test_df))
+            train_arr= np.c_[transformed_input_train_df, np.array(target_train_df)]
+            test_arr= np.c_[transformed_input_test_df,np.array(target_test_df)]
             
             #saving arrays and object
             save_numpy_array_data(self.data_transformation_config.transformed_train_file_path, train_arr)

@@ -25,7 +25,7 @@ def get_classification_score(y_test, y_pred)-> ClassificationMetricArtifact:
 def evaluate_models(x_train, y_train, x_test, y_test,models,params)-> dict:
     try:
         report={}
-        for i in len(list(models)):
+        for i in range(len(list(models))):
             model=list(models.values())[i]
             para=params[list(models.keys())[i]]
             

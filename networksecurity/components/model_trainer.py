@@ -1,8 +1,9 @@
 import os, sys
 import numpy as np
+import mlflow
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
-from networksecurity.entity.artifact_entity import ModelTrainerArtifact, DataTransformationArtifact
+from networksecurity.entity.artifact_entity import ModelTrainerArtifact, DataTransformationArtifact, ClassificationMetricArtifact
 from networksecurity.entity.config_entity import ModelTrainerConfig
 from networksecurity.constant import training_pipeline
 
@@ -24,6 +25,19 @@ class ModelTrainer:
         
         except Exception as e:
             raise NetworkSecurityException(e,sys)
+        
+        
+    def track_mlflow(self,model,classificationmetric:ClassificationMetricArtifact):
+        with mlflow.start_run():
+            f1_score= classificationmetric.f1_score
+            precision_score=classificationmetric.precision_score
+            recall_score=classificationmetric.recall_score
+            
+            mlflow.log_metric("f1 score",f1_score)
+            mlflow.log_metric("precision score",precision_score)
+            mlflow.log_metric("recall score",recall_score)
+            mlflow.sklearn.log_model(model,"model")
+    
         
     def train_model(self,x_train,y_train,x_test,y_test):
         try:
@@ -69,8 +83,13 @@ class ModelTrainer:
             y_train_pred=best_model.predict(x_train)
             train_classification_score=get_classification_score(y_train, y_train_pred)
             
+            self.track_mlflow(best_model, train_classification_score)
+            
             y_test_pred=best_model.predict(x_test)
             test_classification_score=get_classification_score(y_test, y_test_pred)
+            
+            self.track_mlflow(best_model, train_classification_score)
+
             
             prepocessor= load_object(filepath=self.data_transformation_artifact.transformed_object_file_path)
             os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_file_path), exist_ok=True)
