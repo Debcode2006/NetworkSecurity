@@ -97,6 +97,8 @@ class ModelTrainer:
             Network_model = NetworkModel(prepocessor,best_model)
             save_object(self.model_trainer_config.trained_model_file_path,object=Network_model)
             
+            save_object("final_model/model.pkl",best_model)
+            
             logging.info("trained model artifact created.")
             return ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                                  train_metric_artifact=train_classification_score,
